@@ -1,10 +1,7 @@
 ﻿@model IEnumerable<RestaurantApplication.Models.Restaurant>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpswHcF-6hQRysnIaTEdls4l8ATwq4x88"></script>
 
 <head>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 
 </head>
 
@@ -20,7 +17,7 @@
     <br />
 
 </p>
-<div id="map_canvas"></div>
+<div id="dvMap"></div>
 <div class="container">
     <div class="row">
         <div class="span12">
@@ -119,67 +116,36 @@
         z-index: 3;   
     }
 
-    #map_canvas {
+    #dvMap {
         width:720px;
         height:600px;
         position:relative;
     }
 </style>
 
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBm0Lf4OR8ZmzTdEVrofXCJeXsauWS1wsY&sensor=false"></script>
 <script type="text/javascript">
-
-
-    @*<!-- This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded. -->*@
-    $(document).ready(function () {
-        Initialize();
-    });
-
-    // Where all the fun happens
-    function Initialize() {
-
-        // Google has tweaked their interface somewhat - this tells the api to use that new UI
-        google.maps.visualRefresh = true;
-        var Sligo = new google.maps.LatLng(54.27661029999999, -8.47608880000007);
-
-        // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function (p) {
+        var LatLng = new google.maps.LatLng(p.coords.latitude, p.coords.longitude);
         var mapOptions = {
-            zoom: 14,
-            center: Sligo,
-            mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+            center: LatLng,
+            zoom: 13,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
         };
-
-        // This makes the div with id "map_canvas" a google map
-        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
-        // a sample list of JSON encoded data of places to visit in Tunisia
-        // you can either make up a JSON list server side, or call it from a controller using JSONResult
-        var data = [
-                  { "Id": 1, "PlaceName": "Eala Bhan", "GeoLong": "-8.473150000000032", "GeoLat": "54.27133" },
-               ];
-
-        // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
-        $.each(data, function (i, item) {
-            var marker = new google.maps.Marker({
-                'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                'map': map,
-                'title': item.PlaceName
-            });
-
-            // Make the marker-pin blue!
-            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
-
-            // put in some information about each json object - in this case, the opening hours.
-            var infowindow = new google.maps.InfoWindow({
-                content: "<div class='infoDiv'><h2>" + item.PlaceName + "</div></div>"
-            });
-
-            // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.open(map, marker);
-            });
-
-        })
-    }
-
-    //testing git
+        var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
+        var marker = new google.maps.Marker({
+            position: LatLng,
+            map: map,
+            title: "<div style = 'height:60px;width:200px'><b>Your location:</b><br />Latitude: " + p.coords.latitude + "<br />Longitude: " + p.coords.longitude
+        });
+        google.maps.event.addListener(marker, "click", function (e) {
+            var infoWindow = new google.maps.InfoWindow();
+            infoWindow.setContent(marker.title);
+            infoWindow.open(map, marker);
+        });
+    });
+} else {
+    alert('Geo Location feature is not supported in this browser.');
+}
 </script>
