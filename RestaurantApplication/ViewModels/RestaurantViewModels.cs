@@ -10,7 +10,5 @@ namespace RestaurantApplication.ViewModels
     {
         public int NumberofRestaurants { get; set; }
         public List<Restaurant> Restaurants { get; set; }
-        public List<RestaurantManager> RestaurantManagers { get; set; }
-        public List<RestaurantOwner> RestaurantOwners { get; set; }
     }
 }
