@@ -18,7 +18,32 @@ namespace RestaurantApplication
     {
         public Task SendAsync(IdentityMessage message)
         {
+            //message.
+            //new System.Net.Mail.MailAddress(user.Email)); 
+            //RegisterViewModel test = new RegisterViewModel();
+            //string email = test.Email;
             // Plug in your email service here to send an email.
+            string email = message.Destination;
+            string subject = message.Subject;
+            string body = message.Body;
+            #region formatter
+            string text = string.Format("Please click on this link to {0}: {1}", message.Subject, message.Body);
+            string html = "Please confirm your account by clicking this link: <a href=\"" + message.Body + "\">link</a><br/>";
+
+            html += HttpUtility.HtmlEncode(@"Or click on the copy the following link on the browser:" + message.Body);
+            #endregion
+
+
+
+            GMailer.GmailUsername = "restaurantapplicationy4@gmail.com";
+            GMailer.GmailPassword = "password201";
+
+            GMailer mailer = new GMailer();
+            mailer.ToEmail = email;
+            mailer.Subject = subject;
+            mailer.Body = body;
+            mailer.IsHtml = true;
+            mailer.Send();
             return Task.FromResult(0);
         }
     }

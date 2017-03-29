@@ -69,15 +69,30 @@
                         @Html.ActionLink("Edit", "Edit", new { id = item.RestaurantID }, new { @class = "btn btn-warning btn-xs" }) |
                         @Html.ActionLink("Details", "Details", new { id = item.RestaurantID }, new { @class = "btn btn-info btn-xs" }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.RestaurantID }, new { @class = "btn btn-danger btn-xs" })
+                        @Html.ActionLink("Reserve", "Create", "RestaurantReservationEvents", new { id = item.RestaurantID }, new { @class = "btn btn-success btn-xs" })
                     </td>
                 </tr>
             }
 
         </table>
+
+        <div id="disqus_thread"></div>
     </div>
 </div>
 
 <style>
+    #my-welcome-message {
+        display: none;
+        z-index: 500;
+        position: fixed;
+        width: 36%;
+        left: 30%;
+        top: 20%;
+        padding: 20px 2%;
+        font-family: Calibri, Arial, sans-serif;
+        background: #FFF;
+    }
+
     #custom-search-form {
         margin:0;
         margin-top: 5px;
@@ -148,4 +163,30 @@ if (navigator.geolocation) {
 } else {
     alert('Geo Location feature is not supported in this browser.');
 }
+
+
+    //DISQUS
+    (function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://s00147497.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+    })();
+
+    //Welcome Message
+    $('#my-welcome-message').firstVisitPopup({
+        cookieName: 'homepage',
+        showAgainSelector: '#show-message'
+    });
+
+
+    //Delete Message
+    $('*[data-confirmprompt]').click(function (event) {
+        var promptText = $(this).attr('data-confirmprompt');
+        if (!confirm(promptText)) {
+            event.preventDefault();
+        }
+    });
+
+
 </script>
