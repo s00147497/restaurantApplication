@@ -12,7 +12,8 @@ namespace RestaurantApplication.Controllers
 {
     public class RestaurantReservationEventsController : Controller
     {
-        private RestaurantDb db = new RestaurantDb();
+        //private RestaurantDb db = new RestaurantDb();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: RestaurantReservationEvents
         public ActionResult Index()

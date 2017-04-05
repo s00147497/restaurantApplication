@@ -14,7 +14,8 @@ namespace RestaurantApplication.Controllers
     public class HomeController : Controller
     {
         //Database
-        public RestaurantDb db = new RestaurantDb();
+        //public RestaurantDb db = new RestaurantDb();
+        public ApplicationDbContext db = new ApplicationDbContext();
 
         //View Models
         RestaurantViewModels rvm = new RestaurantViewModels();
@@ -39,6 +40,18 @@ namespace RestaurantApplication.Controllers
 
             //rvm.Restaurants = db.Restaurants.ToList();
 
+            var restaurant = from r in db.Restaurants
+                        where r.OwnerId == currentUserId
+                              select r;
+
+            if (restaurant.Count() > 0)
+            {
+                ViewBag.ownsRestaurant = true;
+            }
+            else
+            {
+                ViewBag.ownsRestaurant = false;
+            }
             //return View(rvm.Restaurants);
             return View(restaurants.ToList());
         }
@@ -69,10 +82,12 @@ namespace RestaurantApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RestaurantID,RestaurantName,RestaurantDescription,RestaurantPhoneNo,RestaurantAddress")] Restaurant restaurant)
+        public ActionResult Create([Bind(Include = "RestaurantID,RestaurantName,RestaurantDescription,RestaurantPhoneNo,RestaurantAddress, OpeningTime,ClosingTime")] Restaurant restaurant)
         {
             if (ModelState.IsValid)
             {
+                string currentUserId = User.Identity.GetUserId();
+                restaurant.OwnerId = currentUserId;
                 db.Restaurants.Add(restaurant);
                 db.SaveChanges();
                 return RedirectToAction("Index");

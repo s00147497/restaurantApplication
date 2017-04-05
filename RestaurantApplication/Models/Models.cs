@@ -8,15 +8,15 @@ using System.Web;
 
 namespace RestaurantApplication.Models
 {
-    public class RestaurantDb : DbContext
-    {
-        public RestaurantDb() : base("RestaurantDb")
-        {
-            //Database.SetInitializer(new RestaurantInit());
-        }
-        public DbSet<Restaurant> Restaurants { get; set; }
-        public DbSet<RestaurantReservationEvent> RestaurantReservationEvents { get; set; }
-    }
+    //public class RestaurantDb : DbContext
+    //{
+    //    public RestaurantDb() : base("RestaurantDb")
+    //    {
+    //        //Database.SetInitializer(new RestaurantInit());
+    //    }
+    //    public DbSet<Restaurant> Restaurants { get; set; }
+    //    public DbSet<RestaurantReservationEvent> RestaurantReservationEvents { get; set; }
+    //}
 
     //Enums
     public enum RestaurantType { Ethnic, FastFood, FastCasual, CasualDining, FineDining, Barbecue, BrasserieAndBistro }

@@ -20,6 +20,9 @@ namespace RestaurantApplication.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<RestaurantReservationEvent> RestaurantReservationEvents { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
