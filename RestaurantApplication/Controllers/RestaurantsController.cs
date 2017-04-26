@@ -12,7 +12,6 @@ namespace RestaurantApplication.Controllers
 {
     public class RestaurantsController : Controller
     {
-        //private RestaurantDb db = new RestaurantDb();
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Restaurants
@@ -47,7 +46,7 @@ namespace RestaurantApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RestaurantID,RestaurantName,RestaurantDescription,RestaurantPhoneNo,RestaurantAddress")] Restaurant restaurant)
+        public ActionResult Create([Bind(Include = "RestaurantID,OwnerId,RestaurantName,RestaurantDescription,RestaurantPhoneNo, RestaurantEmailAddress, RestaurantAddress,County,Lat,Long,OpeningTime,ClosingTime,Rating,RestaurantType,NoticeRequired,FurtherDetails")] Restaurant restaurant)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +78,7 @@ namespace RestaurantApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RestaurantID,RestaurantName,RestaurantDescription,RestaurantPhoneNo,RestaurantAddress")] Restaurant restaurant)
+        public ActionResult Edit([Bind(Include = "RestaurantID,OwnerId,RestaurantName,RestaurantDescription,RestaurantPhoneNo, RestaurantEmailAddress, RestaurantAddress,County,Lat,Long,OpeningTime,ClosingTime,Rating,RestaurantType,NoticeRequired,FurtherDetails")] Restaurant restaurant)
         {
             if (ModelState.IsValid)
             {

@@ -25,34 +25,49 @@ namespace RestaurantApplication.Controllers
             IQueryable<Restaurant> restaurants = db.Restaurants;
             //Get the currentely logged in user
             string currentUserId = User.Identity.GetUserId();
+            var UserEmail = User.Identity.GetUserName();
 
             //if current user = null redirect to login page
             if (currentUserId == null)
             {
-              return RedirectToAction("Login", "Account");
+                return RedirectToAction("Login", "Account");
             }
-            //CODE FOR SEARCH FUNCTIONALITY
 
-            if (!String.IsNullOrEmpty(searchString))
+            //check the logged in users role. Are they customer or restaurant?
+            bool userRoleR = User.IsInRole("Restaurant");
+            if (userRoleR == true)
+            {
+                ViewBag.IsRestaurant = true;
+                return View(restaurants.Where(x => x.RestaurantEmailAddress == UserEmail).ToList());
+            }
+            else
+            {
+                ViewBag.IsRestaurant = false;
+            }
+
+            bool userRoleC = User.IsInRole("Customer");
+            if (userRoleC == true)
+            {
+                ViewBag.IsCutomer = true;
+            }
+            else
+            {
+                ViewBag.IsCustomer = false;
+            }
+
+
+                //CODE FOR SEARCH FUNCTIONALITY
+                if (!String.IsNullOrEmpty(searchString))
             {
                 restaurants = restaurants.Where(s => s.RestaurantAddress.Contains(searchString));
             }
 
-            //rvm.Restaurants = db.Restaurants.ToList();
 
-            var restaurant = from r in db.Restaurants
-                        where r.OwnerId == currentUserId
-                              select r;
-
-            if (restaurant.Count() > 0)
-            {
-                ViewBag.ownsRestaurant = true;
-            }
-            else
-            {
-                ViewBag.ownsRestaurant = false;
-            }
+            //var IsRestauarantOwner = from b in db.Restaurants
+            //            where b.OwnerId == currentUserId
+            //            select b;
             //return View(rvm.Restaurants);
+
             return View(restaurants.ToList());
         }
 
@@ -71,23 +86,63 @@ namespace RestaurantApplication.Controllers
             return View(restaurant);
         }
 
-        // GET: Restaurants/Create
-        public ActionResult Create()
+        //// GET: Restaurants/Create
+        //public ActionResult CreateRestaurant()
+        //{
+        //    return View();
+        //}
+
+        //// POST: Restaurants/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult CreateRestaurant([Bind(Include = "RestaurantID,OwnerId,RestaurantName,RestaurantDescription,RestaurantPhoneNo, RestaurantEmailAddress, RestaurantAddress,County,Lat,Long,OpeningTime,ClosingTime,Rating,RestaurantType,FurtherDetails")] Restaurant restaurant)
+        //{
+        //    //setting the owner of the restaurant to be the current logged in users id
+        //    string currentUserId = User.Identity.GetUserId();
+        //    restaurant.OwnerId = currentUserId;
+
+        //    //set the logged on users email to be the email address of the restaurant.
+        //    var email = User.Identity.GetUserName();
+        //    restaurant.RestaurantEmailAddress = email;
+        //    if (ModelState.IsValid)
+        //    {
+
+
+        //        //Convert.ToString(restaurant.NoticeRequired);
+        //        Convert.ToDouble(restaurant.Long);
+        //        Convert.ToDouble(restaurant.Lat);
+        //        db.Restaurants.Add(restaurant);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(restaurant);
+        //}
+
+        public ActionResult CreateRestaurant()
         {
             return View();
         }
 
-        // POST: Restaurants/Create
+        // POST: Restaurants1/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RestaurantID,RestaurantName,RestaurantDescription,RestaurantPhoneNo,RestaurantAddress, OpeningTime,ClosingTime")] Restaurant restaurant)
+        public ActionResult CreateRestaurant([Bind(Include = "RestaurantID,OwnerId,RestaurantName,RestaurantDescription,RestaurantPhoneNo,RestaurantAddress,County,Lat,Long,OpeningTime,ClosingTime,RestaurantType,FurtherDetails")] Restaurant restaurant)
         {
+            //setting the owner of the restaurant to be the current logged in users id
+            string currentUserId = User.Identity.GetUserId();
+            restaurant.OwnerId = currentUserId;
+
+            //    //set the logged on users email to be the email address of the restaurant.
+            var email = User.Identity.GetUserName();
+            restaurant.RestaurantEmailAddress = email;
+            //set rating to 0 as restaurant owner will not create 
             if (ModelState.IsValid)
             {
-                string currentUserId = User.Identity.GetUserId();
-                restaurant.OwnerId = currentUserId;
                 db.Restaurants.Add(restaurant);
                 db.SaveChanges();
                 return RedirectToAction("Index");

@@ -1,0 +1,111 @@
+﻿@model IEnumerable<RestaurantApplication.Models.Restaurant>
+
+@{
+    ViewBag.Title = "Index1";
+}
+
+<h2>Index1</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.OwnerId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantPhoneNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantEmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.County)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Long)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OpeningTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ClosingTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rating)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RestaurantType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FurtherDetails)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OwnerId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RestaurantName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RestaurantDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RestaurantPhoneNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RestaurantEmailAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RestaurantAddress)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.County)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Lat)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Long)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OpeningTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClosingTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Rating)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RestaurantType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FurtherDetails)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.RestaurantID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.RestaurantID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.RestaurantID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -2,191 +2,271 @@
 
 
 <head>
+    @*styling for the table*@
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.11/css/dataTables.bootstrap.min.css">
 
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.11/js/dataTables.bootstrap.min.js"></script>
 </head>
 
 @{
-    ViewBag.Title = "Restaurants";
+    ViewBag.Title = "Home";
 }
+@if (ViewBag.IsRestaurant == true)
+{
+    <h2>You are logged in a restaurant user</h2>
 
-<h2>Restaurants</h2>
+    <p>
+        @Html.ActionLink("Create New Restaurant", "CreateRestaurant", null, new { @class = "btn btn-success" })
+    </p>
 
-<p>
-    @Html.ActionLink("Create New Restaurant", "Create", null, new { @class = "btn btn-success" })
-    <br />
-    <br />
+    <h1>You have Reservations that need attention - Check back end code here for this alert</h1>
 
-</p>
-<div id="dvMap"></div>
-<div class="container">
-    <div class="row">
-        <div class="span12">
-            <form id="custom-search-form" class="form-search form-horizontal pull-right">
-                <div class="input-append span12">
-                    <input type="search" name="searchString" value="" class="search-query input-large" placeholder="Search">
-                    <button type="submit" onclick="SearchString" class="btn"><i class="icon-search"></i></button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<br />
-<div class="row">
-    <div class="col-xs-12">
-        <table class="table table-condensed table-striped">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.RestaurantName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RestaurantDescription)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RestaurantPhoneNo)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RestaurantAddress)
-                </th>
-                <th></th>
-            </tr>
-
-            @foreach (var item in Model)
-            {
+    //if (ViewBag.HasRestaurant == true)
+    if (Model.Count() != 0)
+    {
+        @Html.Label("Your Current Restaurants")
+        <table id="restaurantOwnerTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+            <thead>
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RestaurantName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RestaurantDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RestaurantPhoneNo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RestaurantAddress)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.RestaurantID }, new { @class = "btn btn-warning btn-xs" }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.RestaurantID }, new { @class = "btn btn-info btn-xs" }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.RestaurantID }, new { @class = "btn btn-danger btn-xs" })
-                        @Html.ActionLink("Reserve", "Create", "RestaurantReservationEvents", new { id = item.RestaurantID }, new { @class = "btn btn-success btn-xs" })
-                    </td>
+                    <th>Rating</th>
+                    <th>Restaurant Name</th>
+                    <th>County</th>
+                    <th>Type</th>
+                    <th>Options</th>
                 </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rating)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RestaurantName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.County)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RestaurantType)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.RestaurantID }) |
+                            @*@Html.ActionLink("Details", "Details", new { id = item.RestaurantID }) |*@
+                            @Html.ActionLink("View Reservations", "ViewReservations", new { id = item.RestaurantID }) |
+                            @Html.ActionLink("View ReservationsToday", "ViewReservationsToday", new { id = item.RestaurantID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.RestaurantID })
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    }
+    else
+    {
+        @Html.Label("You do not have any Restaurants , consider making one?")
+    }
+
+}
+else if (ViewBag.IsCutomer == true)
+{
+    <h1>Available Restaurants</h1>
+    <br /><br />
+    @*<div id="dvMap"></div>*@
+    <br /><br />
+    @*<div class="container">
+            <div class="row">
+                <div class="span12">
+                    <form id="custom-search-form" class="form-search form-horizontal pull-right">
+                        <div class="input-append span12">
+                            <input type="search" name="searchString" value="" class="search-query input-large" placeholder="Search">
+                            <button type="submit" onclick="SearchString" class="btn"><i class="icon-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>*@
+    <div class="row">
+        <div class="col-xs-12">
+            @*Restaurants*@
+            @*Check to see if there is restaurants*@
+            @if (Model.Count() == 0)
+            {
+                <h2 id="noRestaurants">There is currentely no restaurants on the site, please check back later</h2>
             }
 
-        </table>
 
-        <div id="disqus_thread"></div>
+            else
+            {
+                <table id="restaurantTable" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Rating</th>
+                            <th>Restaurant Name</th>
+                            <th>Type Of Restaurant</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Rating)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RestaurantName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RestaurantType)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RestaurantPhoneNo)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RestaurantAddress)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("More Details", "Details", new { id = item.RestaurantID }) |
+                                    @Html.ActionLink("Reserve", "Reserve", new { id = item.RestaurantID }) |
+                                    @*if customer had made a reservation and it has taken place allow them to review and add stars*@
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            }
+        </div>
+
+        @*<div id="disqus_thread"></div>*@
     </div>
-</div>
-
-<style>
-    #my-welcome-message {
-        display: none;
-        z-index: 500;
-        position: fixed;
-        width: 36%;
-        left: 30%;
-        top: 20%;
-        padding: 20px 2%;
-        font-family: Calibri, Arial, sans-serif;
-        background: #FFF;
-    }
-
-    #custom-search-form {
-        margin:0;
-        margin-top: 5px;
-        padding: 0;
-    }
- 
-    #custom-search-form .search-query {
-        padding-right: 3px;
-        padding-right: 4px \9;
-        padding-left: 3px;
-        padding-left: 4px \9;
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
- 
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
- 
-    #custom-search-form button {
-        border: 0;
-        background: none;
-        /** belows styles are working good */
-        padding: 2px 5px;
-        margin-top: 2px;
-        position: relative;
-        left: -28px;
-        /* IE7-8 doesn't have border-radius, so don't indent the padding */
-        margin-bottom: 0;
-        -webkit-border-radius: 3px;
-        -moz-border-radius: 3px;
-        border-radius: 3px;
-    }
- 
-    .search-query:focus + button {
-        z-index: 3;   
-    }
-
-    #dvMap {
-        width:720px;
-        height:600px;
-        position:relative;
-    }
-</style>
-
-<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBm0Lf4OR8ZmzTdEVrofXCJeXsauWS1wsY&sensor=false"></script>
-<script type="text/javascript">
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function (p) {
-        var LatLng = new google.maps.LatLng(p.coords.latitude, p.coords.longitude);
-        var mapOptions = {
-            center: LatLng,
-            zoom: 13,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
-        };
-        var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
-        var marker = new google.maps.Marker({
-            position: LatLng,
-            map: map,
-            title: "<div style = 'height:60px;width:200px'><b>Your location:</b><br />Latitude: " + p.coords.latitude + "<br />Longitude: " + p.coords.longitude
-        });
-        google.maps.event.addListener(marker, "click", function (e) {
-            var infoWindow = new google.maps.InfoWindow();
-            infoWindow.setContent(marker.title);
-            infoWindow.open(map, marker);
-        });
-    });
-} else {
-    alert('Geo Location feature is not supported in this browser.');
 }
 
 
-    //DISQUS
-    (function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = 'https://s00147497.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-    })();
-
-    //Welcome Message
-    $('#my-welcome-message').firstVisitPopup({
-        cookieName: 'homepage',
-        showAgainSelector: '#show-message'
-    });
 
 
-    //Delete Message
-    $('*[data-confirmprompt]').click(function (event) {
-        var promptText = $(this).attr('data-confirmprompt');
-        if (!confirm(promptText)) {
-            event.preventDefault();
+
+
+    <style>
+        #my-welcome-message {
+            display: none;
+            z-index: 500;
+            position: fixed;
+            width: 36%;
+            left: 30%;
+            top: 20%;
+            padding: 20px 2%;
+            font-family: Calibri, Arial, sans-serif;
+            background: #FFF;
         }
-    });
+
+        #custom-search-form {
+            margin: 0;
+            margin-top: 5px;
+            padding: 0;
+        }
+
+            #custom-search-form .search-query {
+                padding-right: 3px;
+                padding-right: 4px \9;
+                padding-left: 3px;
+                padding-left: 4px \9;
+                /* IE7-8 doesn't have border-radius, so don't indent the padding */
+                margin-bottom: 0;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+            }
+
+            #custom-search-form button {
+                border: 0;
+                background: none;
+                /** belows styles are working good */
+                padding: 2px 5px;
+                margin-top: 2px;
+                position: relative;
+                left: -28px;
+                /* IE7-8 doesn't have border-radius, so don't indent the padding */
+                margin-bottom: 0;
+                -webkit-border-radius: 3px;
+                -moz-border-radius: 3px;
+                border-radius: 3px;
+            }
+
+        .search-query:focus + button {
+            z-index: 3;
+        }
+
+        #dvMap {
+            width: 720px;
+            height: 600px;
+            position: relative;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBm0Lf4OR8ZmzTdEVrofXCJeXsauWS1wsY&sensor=false"></script>
+    <script type="text/javascript">
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (p) {
+            var LatLng = new google.maps.LatLng(p.coords.latitude, p.coords.longitude);
+            var mapOptions = {
+                center: LatLng,
+                zoom: 13,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
+            var marker = new google.maps.Marker({
+                position: LatLng,
+                map: map,
+                title: "<div style = 'height:60px;width:200px'><b>Your location:</b><br />Latitude: " + p.coords.latitude + "<br />Longitude: " + p.coords.longitude
+            });
+            google.maps.event.addListener(marker, "click", function (e) {
+                var infoWindow = new google.maps.InfoWindow();
+                infoWindow.setContent(marker.title);
+                infoWindow.open(map, marker);
+            });
+        });
+    } else {
+        alert('Geo Location feature is not supported in this browser.');
+    }
+
+    //Data Tables
+    
+    $('#restaurantTable').DataTable();
+    $('#restaurantOwnerTable').DataTable();
+    
 
 
-</script>
+    ////DISQUS
+    //(function () { // DON'T EDIT BELOW THIS LINE
+    //    var d = document, s = d.createElement('script');
+    //    s.src = 'https://s00147497.disqus.com/embed.js';
+    //    s.setAttribute('data-timestamp', +new Date());
+    //    (d.head || d.body).appendChild(s);
+    //})();
+
+    ////Welcome Message
+    //$('#my-welcome-message').firstVisitPopup({
+    //    cookieName: 'homepage',
+    //    showAgainSelector: '#show-message'
+    //});
+
+
+    ////Delete Message
+    //$('*[data-confirmprompt]').click(function (event) {
+    //    var promptText = $(this).attr('data-confirmprompt');
+    //    if (!confirm(promptText)) {
+    //        event.preventDefault();
+    //    }
+    //});
+    </script>
