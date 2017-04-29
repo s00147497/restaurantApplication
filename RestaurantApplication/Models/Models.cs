@@ -75,24 +75,32 @@ namespace RestaurantApplication.Models
         public string RestaurantEmailAddress { get; set; }
 
         //Address
+        [Required(ErrorMessage = "You must enter an Address")]
         [Display(Name = "Address")]
         [StringLength(200, ErrorMessage = "Address is too long")] //character remaining count
         public string RestaurantAddress { get; set; }
 
+        //Town
+        [Required(ErrorMessage = "You must enter a Town")]
+        [Display(Name = "Town")]
+        [StringLength(200, ErrorMessage = "Please enter Town")] //character remaining count
+        public string RestaurantTown { get; set; }
+
         //County
+        [Required(ErrorMessage = "You must enter a County")]
         [Display(Name = "County")]
-        [StringLength(200, ErrorMessage = "Please Select County")]
+        [StringLength(200, ErrorMessage = "Please Enter county")]
         public string County { get; set; }
 
-        //Latidude
-        [Display(Name = "Latitude Co-Ordinates")]
-        //[StringLength(200, ErrorMessage = "Please enter Latidute Co-Ordinates")]
-        public double Lat { get; set; }
+        ////Latidude
+        //[Display(Name = "Latitude Co-Ordinates")]
+        ////[StringLength(200, ErrorMessage = "Please enter Latidute Co-Ordinates")]
+        //public double Lat { get; set; }
 
-        //Longitude
-        [Display(Name = "Longitude Co-Ordinates")]
-        //[StringLength(200, ErrorMessage = "Please enter Longitude Co-Ordinates")]      ADD BUTTON TO GET COORDS
-        public double Long { get; set; }
+        ////Longitude
+        //[Display(Name = "Longitude Co-Ordinates")]
+        ////[StringLength(200, ErrorMessage = "Please enter Longitude Co-Ordinates")]      ADD BUTTON TO GET COORDS
+        //public double Long { get; set; }
 
         //Opening Time
         [Required(ErrorMessage = "Please enter the restaurants opening time")]
@@ -139,7 +147,7 @@ namespace RestaurantApplication.Models
         public int RestaurantReservationEventID { get; set; }
 
         //Bookers Name
-        [Required(ErrorMessage = "You must enter the Name of who's booking the table")]
+        [Required(ErrorMessage = "You must enter the Name of who's making the reservation")]
         [Display(Name = "Name")]
         public string BookersName { get; set; }
 
@@ -153,7 +161,7 @@ namespace RestaurantApplication.Models
         //Start Time
         [Required(ErrorMessage = "You must give this booking a start time")]
         [Display(Name = "Start Time")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.Time)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
         public DateTime BookingStartTime { get; set; }
 
@@ -172,6 +180,7 @@ namespace RestaurantApplication.Models
         //Number of People
         [Display(Name = "Number of People")]
         [DataType(DataType.Text)]
+        [Range(int.MinValue, 10)]
         public int BookingNumberOfPeople { get; set; }
 
         //Booking Status? Accepted - Pending - Declined
@@ -184,7 +193,13 @@ namespace RestaurantApplication.Models
         [DataType(DataType.Text)]
         public string BookingEmailSent { get; set; }
 
+        //Bookers Email
+        [Display(Name = "Email")]
+        [DataType(DataType.Text)]
+        public string BookingUsersEmail { get; set; }
+
         //Foreign Key for Restaurant
+        //[ForeignKey("RestaurantID")]
         public int RestaurantID { get; set; }
 
     }//end reservation class

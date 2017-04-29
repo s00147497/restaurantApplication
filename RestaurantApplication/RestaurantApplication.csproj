@@ -44,13 +44,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Geocoding, Version=3.6.0.0, Culture=neutral, PublicKeyToken=7c714700b88674c7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Geocoding.net.3.6.0\lib\net40\Geocoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GoogleMapsGeocoding, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Maps.Geocoding.NET-API.1.0.0\lib\net45\GoogleMapsGeocoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SendGrid, Version=9.0.12.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL">
@@ -226,6 +234,18 @@
     <Compile Include="Migrations\201704262326048_updating BookingReservation Tbl.Designer.cs">
       <DependentUpon>201704262326048_updating BookingReservation Tbl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704271029069_change to reservation class.cs" />
+    <Compile Include="Migrations\201704271029069_change to reservation class.Designer.cs">
+      <DependentUpon>201704271029069_change to reservation class.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704281204263_change to restaurant class.cs" />
+    <Compile Include="Migrations\201704281204263_change to restaurant class.Designer.cs">
+      <DependentUpon>201704281204263_change to restaurant class.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201704282323059_updating Reservation class.cs" />
+    <Compile Include="Migrations\201704282323059_updating Reservation class.Designer.cs">
+      <DependentUpon>201704282323059_updating Reservation class.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -246,6 +266,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\RestaurantSystem - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\RestaurantSystem - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -299,18 +321,26 @@
     <Content Include="Views\Home\Delete.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
-    <Content Include="Views\Home\CreateReservation.cshtml" />
-    <Content Include="Views\RestaurantReservationEvents\Create.cshtml" />
-    <Content Include="Views\RestaurantReservationEvents\Delete.cshtml" />
-    <Content Include="Views\RestaurantReservationEvents\Details.cshtml" />
-    <Content Include="Views\RestaurantReservationEvents\Edit.cshtml" />
-    <Content Include="Views\RestaurantReservationEvents\Index.cshtml" />
     <Content Include="Views\CreateReservation.cshtml" />
     <Content Include="Views\Account\PleaseConfirmEmail.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Home\CreateRestaurant.cshtml" />
     <Content Include="Views\createrest.cshtml" />
     <Content Include="Views\Home\Index1.cshtml" />
+    <Content Include="Views\Home\CreateReservation.cshtml" />
+    <Content Include="Views\RestaurantReservationEvents\Create.cshtml" />
+    <Content Include="Views\RestaurantReservationEvents\Delete.cshtml" />
+    <Content Include="Views\RestaurantReservationEvents\Details.cshtml" />
+    <Content Include="Views\RestaurantReservationEvents\Edit.cshtml" />
+    <Content Include="Views\RestaurantReservationEvents\Index.cshtml" />
+    <Content Include="Views\Shared\_RestaurantReservations.cshtml" />
+    <Content Include="Views\Shared\GetDirections.cshtml" />
+    <Content Include="Views\Home\Get_Directions.cshtml" />
+    <Content Include="Views\Home\AcceptReservation.cshtml" />
+    <Content Include="Views\Home\DeclineReservation.cshtml" />
+    <Content Include="Views\Home\ReservationSent.cshtml" />
+    <Content Include="Views\Home\ViewReservations.cshtml" />
+    <Content Include="Views\Home\ViewReservationsToday.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -346,6 +376,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704262326048_updating BookingReservation Tbl.resx">
       <DependentUpon>201704262326048_updating BookingReservation Tbl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704271029069_change to reservation class.resx">
+      <DependentUpon>201704271029069_change to reservation class.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704281204263_change to restaurant class.resx">
+      <DependentUpon>201704281204263_change to restaurant class.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704282323059_updating Reservation class.resx">
+      <DependentUpon>201704282323059_updating Reservation class.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,0 +1,41 @@
+﻿<head>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+
+<br /><br />
+<ol class="breadcrumb">
+    @*<li><a href="https://localhost:59274/Home/Index">Home</a></li>*@
+    @* reload page when you go back *@
+    <li><a href="javascript:history.back()">Home</a></li>
+    <li class="active">Decline Reservation</li>
+</ol>
+@{
+    ViewBag.Title = "Reservation Declined";
+}
+
+<center><h2 id="decline">You have declined this reservation</h2></center>
+<center><h2 id="email">An email has been sent to the booker to inform them that their reservation has been cancelled</h2></center>
+
+<style>
+    #decline {
+        padding-top: 45px;
+        padding-bottom: 20px;
+        padding-right: 50px;
+        padding-left: 50px;
+        font-family: Arial;
+        font-size: 45px;
+        color: maroon;
+    }
+
+    #email {
+        padding-bottom: 20px;
+        font-family: Arial;
+        font-size: 25px;
+        color: maroon;
+    }
+</style>
+
+
+

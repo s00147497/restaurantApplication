@@ -1,0 +1,18 @@
+namespace RestaurantApplication.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class updatingReservationclass : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.RestaurantReservationEvents", "BookingUsersEmail", c => c.String());
+        }
+        
+        public override void Down()
+        {
+            DropColumn("dbo.RestaurantReservationEvents", "BookingUsersEmail");
+        }
+    }
+}

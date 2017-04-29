@@ -12,7 +12,6 @@ namespace RestaurantApplication.Controllers
 {
     public class RestaurantReservationEventsController : Controller
     {
-        //private RestaurantDb db = new RestaurantDb();
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: RestaurantReservationEvents
@@ -47,7 +46,7 @@ namespace RestaurantApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "RestaurantReservationEventID,BookersName,BookingDate,BookingStartTime,BookingEndTime,BookingDesc,RestaurantID")] RestaurantReservationEvent restaurantReservationEvent)
+        public ActionResult Create([Bind(Include = "RestaurantReservationEventID,BookersName,BookingDate,BookingStartTime,BookingEndTime,BookingDesc,BookingNumberOfPeople,BookingStatus,BookingEmailSent,RestaurantID")] RestaurantReservationEvent restaurantReservationEvent)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +78,7 @@ namespace RestaurantApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RestaurantReservationEventID,BookersName,BookingDate,BookingStartTime,BookingEndTime,BookingDesc,RestaurantID")] RestaurantReservationEvent restaurantReservationEvent)
+        public ActionResult Edit([Bind(Include = "RestaurantReservationEventID,BookersName,BookingDate,BookingStartTime,BookingEndTime,BookingDesc,BookingNumberOfPeople,BookingStatus,BookingEmailSent,RestaurantID")] RestaurantReservationEvent restaurantReservationEvent)
         {
             if (ModelState.IsValid)
             {

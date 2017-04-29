@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewBag.Title = "Reservation Sent";
+}
+
+<center><h2 id="decline">Thank you for your reservation :)</h2></center>
+<center><h2 id="email">Your reservation is now pending! An email has been sent to the restaurant to inform them 
+    You will recieve an email shortly stating if the restaurant has accepted or declined this reservation</h2></center>
+
+<center>@Html.ActionLink("Search Again", "Index", "Events", new { @class = "btn btn-primary" })</center>
+
+<style>
+    #decline {
+        padding-top: 45px;
+        padding-bottom: 20px;
+        padding-right: 50px;
+        padding-left: 50px;
+        font-family: Arial;
+        font-size: 45px;
+        color: forestgreen;
+    }
+
+    #email {
+        padding-bottom: 20px;
+        font-family: Arial;
+        font-size: 25px;
+        color: forestgreen;
+    }
+</style>
+
+

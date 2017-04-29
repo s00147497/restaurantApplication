@@ -1,0 +1,177 @@
+﻿@model RestaurantApplication.Models.Restaurant
+
+@{
+    ViewBag.Title = "Get Directions";
+}
+<br /><br />
+<ol class="breadcrumb">
+    @*<li><a href="https://localhost:59274/">Home</a></li>*@
+    @* reload page when you go back *@
+    <li><a href="javascript:history.back()">Home</a></li>
+    <li class="active">Get Directions</li>
+</ol>
+<h2>Get Directions to @ViewBag.RestaurantName</h2>
+
+<head>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBm0Lf4OR8ZmzTdEVrofXCJeXsauWS1wsY&sensor=false"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+@if (ViewBag.MapAvailable == true)
+{
+    <div class="row">
+        <div class="col-sm-6" id="gMap">
+
+        </div>
+        <div class="col-sm-6">
+            <h3>Would you like directions to the Restaurant?</h3>
+            <input type="text" placeholder="Enter your starting point" id="txtStartingPoint">
+            <p style="padding-top: 10px; padding-bottom: 10px;">
+                <button onclick="GetDirections()" class="btn btn-success">Get Directions</button>
+            </p>
+            <h1 style="text-align:center;" id="txtDirections"></h1>
+            <div id="directions">
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <h2>Sorry but there is no Map Available</h2>
+}
+
+
+<script>
+    //Find Directions
+    function GetDirections() {
+
+        //Is value entered for starting location
+        var startPoint = document.getElementById('txtStartingPoint').value;
+
+        if (startPoint == null || startPoint == "") {
+            alert("Please enter location");
+        }
+
+        else
+        {
+            console.log("get map hit from else")
+            GetMap();
+        }
+
+    }
+
+    function GetMap() {
+
+        console.log("get map function")
+        //Clear last directions
+        document.getElementById('directions').innerHTML = "";
+        txtDirections.innerHTML = "";
+
+        var directionsService = new google.maps.DirectionsService();
+        var directionsDisplay = new google.maps.DirectionsRenderer();
+
+        //Get start and End locations that the user selected
+        var startLocation = document.getElementById('txtStartingPoint').value;
+        var endLocation =  @Html.Raw(Json.Encode(@ViewBag.Address));
+
+        console.log(startLocation);
+        console.log(endLocation);
+
+        var map = new google.maps.Map(document.getElementById('gMap'), {
+
+        });
+
+        directionsDisplay.setMap(map);
+        directionsDisplay.setPanel(document.getElementById('directions'));
+
+        //Map options
+        var request = {
+            origin: startLocation,
+            destination: endLocation,
+            travelMode: google.maps.DirectionsTravelMode.DRIVING
+        };
+
+        directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
+    }
+
+    //Google Map
+    function GoogleMap(lat, lon) {
+        //style map
+        var styles = [
+          //Road Labels
+          {
+              featureType: "road",
+              elementType: "labels",
+              stylers: [
+                { visibility: "on" }
+              ]
+          },
+          //Road Geometry
+          {
+              featureType: "road",
+              elementType: "geometry",
+              stylers: [
+                { lightness: 100 },
+                { visibility: "simplified" }
+              ]
+          }
+        ];
+
+        var styledMap = new google.maps.StyledMapType(styles,
+          { name: "Styled Map" });
+
+        //Get center using longitude and latitude passed back from controller
+        var center = new google.maps.LatLng(lat, lon);
+
+        //Specify Map Options
+        var mapOptions = {
+            zoom: 16, //Map Zoom Level
+            center: center, //Set Map center point
+            mapTypeControlOptions: {
+                mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+            }
+        };
+
+        //Assign Map to div
+        var map = new google.maps.Map(document.getElementById('gMap'),
+          mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: center,
+            map: map,
+            title: "@ViewBag.RestaurantName"
+        })
+
+        map.mapTypes.set('map_style', styledMap);
+        map.setMapTypeId('map_style');
+
+        google.maps.event.trigger(map, "resize");
+        map.setCenter(center);
+    }
+
+    (function() {
+        //check if view has map and get coords
+        var hasMap =  @Html.Raw(Json.Encode(@ViewBag.hasMap));
+        var long =  @Html.Raw(Json.Encode(@ViewBag.Long));
+        var lat =  @Html.Raw(Json.Encode(@ViewBag.Lat));
+
+        if (long != null && lat != null) {
+            console.log("lat and long available");
+            GoogleMap(lat, long);
+        }
+
+
+    })();
+
+
+
+</script>
+<style>
+    #gMap {
+        height: 500px;
+    }
+</style>
