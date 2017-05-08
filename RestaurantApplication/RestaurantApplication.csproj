@@ -52,6 +52,10 @@
       <HintPath>..\packages\Google.Maps.Geocoding.NET-API.1.0.0\lib\net45\GoogleMapsGeocoding.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Json, Version=1.0.0.0, Culture=neutral, PublicKeyToken=c6752e45808247c2, processorArchitecture=MSIL">
+      <HintPath>..\packages\JSON.1.0.1\lib\net40\Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -320,7 +324,6 @@
     <Content Include="Views\Create.cshtml" />
     <Content Include="Views\Home\Delete.cshtml" />
     <Content Include="Views\Home\Details.cshtml" />
-    <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\CreateReservation.cshtml" />
     <Content Include="Views\Account\PleaseConfirmEmail.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
@@ -335,12 +338,13 @@
     <Content Include="Views\RestaurantReservationEvents\Index.cshtml" />
     <Content Include="Views\Shared\_RestaurantReservations.cshtml" />
     <Content Include="Views\Shared\GetDirections.cshtml" />
-    <Content Include="Views\Home\Get_Directions.cshtml" />
     <Content Include="Views\Home\AcceptReservation.cshtml" />
     <Content Include="Views\Home\DeclineReservation.cshtml" />
     <Content Include="Views\Home\ReservationSent.cshtml" />
     <Content Include="Views\Home\ViewReservations.cshtml" />
     <Content Include="Views\Home\ViewReservationsToday.cshtml" />
+    <Content Include="Views\Home\Edit.cshtml" />
+    <Content Include="Views\Home\Review.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

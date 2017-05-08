@@ -11,6 +11,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Net.Mail;
+using System.Web.UI;
 
 namespace RestaurantApplication.Controllers
 {
@@ -23,7 +24,7 @@ namespace RestaurantApplication.Controllers
         //View Models
         RestaurantViewModels rvm = new RestaurantViewModels();
 
-        public ActionResult Index(string searchString)
+        public ActionResult Index()
         {
             IQueryable<Restaurant> restaurants = db.Restaurants;
             //Get the currentely logged in user
@@ -58,18 +59,29 @@ namespace RestaurantApplication.Controllers
                 ViewBag.IsCustomer = false;
             }
 
+            //IGeocoder geoCode;
+            //geoCode = new GoogleGeocoder();
 
-            //CODE FOR SEARCH FUNCTIONALITY
-            //    if (!String.IsNullOrEmpty(searchString))
+            ////get lat and long of each restaurant
+            //string address = string.Format("{0}, {1}, {2}, Ireland", restaurant.RestaurantAddress, restaurant.RestaurantTown, restaurant.County);
+
+            //List<String> raddress = new List<String>();
+            //var coordinates = geoCode.Geocode(address);
+            //raddress.Add(coordinates);
+
+            ////Check if coordinates are valid
+            //if (coordinates.Count > 0)
             //{
-            //    restaurants = restaurants.Where(s => s.RestaurantAddress.Contains(searchString));
+            //    var longlat = coordinates.First();
+
+            //    //Pass variables to View
+            //    ViewBag.Address = address;
+            //    ViewBag.Lat = Convert.ToDouble(longlat.Coordinates.Latitude);
+            //    ViewBag.Long = Convert.ToDouble(longlat.Coordinates.Longitude);
+
+            //    ViewBag.mapAvailable = true;
             //}
 
-
-            //var IsRestauarantOwner = from b in db.Restaurants
-            //            where b.OwnerId == currentUserId
-            //            select b;
-            //return View(rvm.Restaurants);
 
             return View(restaurants.ToList());
         }
@@ -139,7 +151,7 @@ namespace RestaurantApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RestaurantID,RestaurantName,RestaurantDescription,RestaurantPhoneNo,RestaurantAddress")] Restaurant restaurant)
+        public ActionResult Edit([Bind(Include = "RestaurantID, OwnerID, RestaurantName,RestaurantDescription,RestaurantPhoneNo,RestaurantAddress,RestaurantEmailAddress,RestaurantTown,County,OpeningTime,ClosingTime,RestaurantType,FurtherDetails")] Restaurant restaurant)
         {
             if (ModelState.IsValid)
             {
@@ -312,7 +324,7 @@ namespace RestaurantApplication.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "RestaurantReservationEventID,BookersName,BookingDate,BookingStartTime,BookingEndTime,BookingDesc,BookingNumberOfPeople,BookingStatus,BookingEmailSent,RestaurantID")] RestaurantReservationEvent restaurantReservationEvent)
+        public ActionResult EditReservation([Bind(Include = "RestaurantReservationEventID,BookersName,BookingDate,BookingStartTime,BookingEndTime,BookingDesc,BookingNumberOfPeople,BookingStatus,BookingEmailSent,RestaurantID")] RestaurantReservationEvent restaurantReservationEvent)
         {
             if (ModelState.IsValid)
             {
@@ -353,8 +365,8 @@ namespace RestaurantApplication.Controllers
         public ActionResult RestaurantReservationsPartialView(int id)
         {
             //Check to see if there is any reservations
-            int numberOfReservations = db.RestaurantReservationEvents.Where(x => x.RestaurantID == id).ToList().Count();
-            ViewBag.numReservations = numberOfReservations;
+            //int numberOfReservations = db.RestaurantReservationEvents.Where(x => x.RestaurantID == id).ToList().Count();
+            //ViewBag.numReservations = numberOfReservations;
 
             //get the reservations for the current logged on restaurant
             //var reservations = db.RestaurantReservationEvents.Where(x => x.RestaurantID == id).ToList();
@@ -363,6 +375,8 @@ namespace RestaurantApplication.Controllers
             var reservations = (from r in db.RestaurantReservationEvents
                               where r.BookingStatus == "Pending" && r.RestaurantID == id
                               select r).ToList();
+
+            ViewBag.Reservations = reservations.Count();
 
             //ViewBag.ReservationStatus = pendingRes;
 
@@ -408,6 +422,26 @@ namespace RestaurantApplication.Controllers
                 
                 ViewBag.mapAvailable = true;
             }
+
+            return View();
+        }
+
+        //GET DIRETIONS TO RESTAURANT 
+        public ActionResult Review(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Restaurant restaurant = db.Restaurants.Find(id);
+            if (restaurant == null)
+            {
+                return HttpNotFound();
+            }
+
+            //PassRestaurantName to view
+            var restaurantName = restaurant.RestaurantName.ToString();
+            ViewBag.RestaurantName = restaurantName;
 
             return View();
         }
